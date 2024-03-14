@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const infrastructureOptions = [
   {
-    name: "Monolithic",
+    name: "Monolithic1",
     icon: <FaBuilding className="w-10 h-10 text-gray-700" />,
   },
   {
