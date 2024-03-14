@@ -1,33 +1,34 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Header from './components/common/Header';
+import Footer from './components/common/Footer';
+import Login from './components/auth/Login';
+import Registration from './components/auth/Registration';
+import VerifyEmail from './components/auth/VerifyEmail';
+import Dashboard from './components/dashboard/Dashboard';
+import ForgetPassword from './components/auth/ForgetPassword'; // Import ForgetPassword component
+import ConfirmPassword from './components/auth/ConfirmPassword'; // Import ConfirmPassword component
+import './index.css';
 
 function App() {
   return (
-    <div className="flex flex-col h-full items-center justify-center bg-gray-200 text-gray-700">
-      <div className="flex items-center">
-        <h1 className="text-6xl font-thin tracking-wider">Create React App + Tailwind CSS</h1>
+    <Router>
+      <div className="flex flex-col min-h-screen">
+        <Header />
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Navigate replace to="/login" />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Registration />} />
+            <Route path="/verify-email" element={<VerifyEmail />} />
+            <Route path="/forget-password" element={<ForgetPassword />} /> {/* Add ForgetPassword route */}
+            <Route path="/confirm-password" element={<ConfirmPassword />} /> {/* Add ConfirmPassword route */}
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Routes>
+        </main>
+        <Footer />
       </div>
-      <p className="my-6 tracking-wide">
-        Edit <code>src/App.js</code> and save to reload.
-      </p>
-      <div className="mt-6 flex justify-center">
-        <a
-          className="uppercase hover:underline"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <a
-          className="ml-10 uppercase hover:underline"
-          href="https://tailwindcss.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn Tailwind
-        </a>
-      </div>
-    </div>
+    </Router>
   );
 }
 
