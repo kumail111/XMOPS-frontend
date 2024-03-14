@@ -8,7 +8,7 @@ const infrastructureOptions = [
     icon: <FaBuilding className="w-10 h-10 text-gray-700" />,
   },
   {
-    name: "Microservices",
+    name: "Highly Available",
     icon: <FaNetworkWired className="w-10 h-10 text-gray-700" />,
   },
   {
