@@ -8,7 +8,7 @@ import VerifyEmail from './components/auth/VerifyEmail';
 import Dashboard from './components/dashboard/Dashboard';
 import ForgetPassword from './components/auth/ForgetPassword'; // Import ForgetPassword component
 import ConfirmPassword from './components/auth/ConfirmPassword'; // Import ConfirmPassword component
-import LightsailDeployment from './components/LightsailDeployment'; // Import LightsailDeployment component
+import LightsailDeployment from './components/infra/LightsailDeployment'; // Import LightsailDeployment component
 import './index.css';
 
 function App() {
