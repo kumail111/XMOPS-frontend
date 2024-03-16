@@ -9,6 +9,7 @@ import Dashboard from './components/dashboard/Dashboard';
 import ForgetPassword from './components/auth/ForgetPassword'; // Import ForgetPassword component
 import ConfirmPassword from './components/auth/ConfirmPassword'; // Import ConfirmPassword component
 import LightsailDeployment from './components/infra/LightsailDeployment'; // Import LightsailDeployment component
+import MonolithDeployment from './components/infra/MonolithDeployment';
 import './index.css';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
             <Route path="/confirm-password" element={<ConfirmPassword />} /> {/* ConfirmPassword route */}
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/lightsail-deployment" element={<LightsailDeployment />} /> {/* Lightsail Deployment route */}
+            <Route path="/monolith-deployment" element={<MonolithDeployment />} /> {/* Monolith Deployment route */}
           </Routes>
         </main>
         <Footer />
