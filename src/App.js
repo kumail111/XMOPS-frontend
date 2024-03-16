@@ -8,6 +8,8 @@ import VerifyEmail from './components/auth/VerifyEmail';
 import Dashboard from './components/dashboard/Dashboard';
 import ForgetPassword from './components/auth/ForgetPassword'; // Import ForgetPassword component
 import ConfirmPassword from './components/auth/ConfirmPassword'; // Import ConfirmPassword component
+import LightsailDeployment from './components/infra/LightsailDeployment'; // Import LightsailDeployment component
+import MonolithDeployment from './components/infra/MonolithDeployment';
 import './index.css';
 
 function App() {
@@ -21,9 +23,11 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Registration />} />
             <Route path="/verify-email" element={<VerifyEmail />} />
-            <Route path="/forget-password" element={<ForgetPassword />} /> {/* Add ForgetPassword route */}
-            <Route path="/confirm-password" element={<ConfirmPassword />} /> {/* Add ConfirmPassword route */}
+            <Route path="/forget-password" element={<ForgetPassword />} /> {/* ForgetPassword route */}
+            <Route path="/confirm-password" element={<ConfirmPassword />} /> {/* ConfirmPassword route */}
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/lightsail-deployment" element={<LightsailDeployment />} /> {/* Lightsail Deployment route */}
+            <Route path="/monolith-deployment" element={<MonolithDeployment />} /> {/* Monolith Deployment route */}
           </Routes>
         </main>
         <Footer />
