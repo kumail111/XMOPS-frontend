@@ -7,6 +7,7 @@ const infrastructureOptions = [
   {
     name: "Monolithic",
     icon: <FaBuilding className="w-10 h-10 text-gray-700" />,
+    route: "/monolith-deployment",
   },
   {
     name: "Highly Available",
