@@ -4,43 +4,52 @@ import axios from 'axios';
 const LightsailDeployment = () => {
   const [awsRegions, setAwsRegions] = useState([]);
   const [selectedRegion, setSelectedRegion] = useState('');
-  const [blueprints, setBlueprints] = useState([]);
-  const [selectedBlueprint, setSelectedBlueprint] = useState('');
-  const [instancePlans, setInstancePlans] = useState([]);
+  const [availabilityZones, setAvailabilityZones] = useState([]);
+  const [selectedAZ, setSelectedAZ] = useState('');
+  const [blueprints, setBlueprints] = useState(['WordPress']); // Assuming fixed blueprint for simplicity
+  const [selectedBlueprint, setSelectedBlueprint] = useState('WordPress');
+  const [instancePlans, setInstancePlans] = useState(['nano', 'micro', 'small']);
   const [selectedPlan, setSelectedPlan] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    // Mock fetching AWS regions and instance plans
-    setAwsRegions(['us-east-1', 'us-west-2']);
-    setInstancePlans(['nano', 'micro', 'small']);
+    // Fetch AWS regions
+    setAwsRegions([
+      { id: 'us-east-1', name: 'US East (N. Virginia)' },
+      { id: 'us-west-2', name: 'US West (Oregon)' }
+    ]);
+    // Simulate fetching instance plans if needed
   }, []);
 
   useEffect(() => {
-    // Mock fetching blueprints based on selected region
-    if (selectedRegion) {
-      setBlueprints(['WordPress', 'LAMP Stack', 'Node.js']);
+    if (selectedRegion === 'us-east-1') {
+      setAvailabilityZones(['us-east-1a', 'us-east-1b']);
+    } else if (selectedRegion === 'us-west-2') {
+      setAvailabilityZones(['us-west-2a', 'us-west-2b']);
     }
   }, [selectedRegion]);
+  
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    try {
-      // Replace with your backend endpoint
-      const response = await axios.post('YOUR_BACKEND_ENDPOINT', {
-        region: selectedRegion,
-        blueprint: selectedBlueprint,
-        plan: selectedPlan,
-      });
-      setMessage('Deployment initiated successfully!');
-    } catch (error) {
-      setMessage('Failed to initiate deployment.');
-    } finally {
+    // Here you would replace with the actual call to your backend to initiate deployment
+    console.log({
+      region: selectedRegion,
+      az: selectedAZ,
+      blueprint: selectedBlueprint,
+      plan: selectedPlan,
+    });
+    // Simulating API call response
+    setTimeout(() => {
       setLoading(false);
-    }
+      setMessage('Deployment initiated successfully!');
+      // Reset form or handle next steps here
+    }, 2000);
   };
+  console.log("Selected Region:", selectedRegion, "Availability Zones:", availabilityZones);
 
   return (
     <div className="container mx-auto p-4">
@@ -56,7 +65,21 @@ const LightsailDeployment = () => {
             required>
             <option value="">Select a region</option>
             {awsRegions.map((region) => (
-              <option key={region} value={region}>{region}</option>
+              <option key={region.id} value={region.id}>{region.name}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="az" className="block text-sm font-medium text-gray-700">Availability Zone</label>
+          <select
+            id="az"
+            className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none"
+            value={selectedAZ}
+            onChange={(e) => setSelectedAZ(e.target.value)}
+            required>
+            <option value="">Select an availability zone</option>
+            {availabilityZones.map((az) => (
+              <option key={az} value={az}>{az}</option>
             ))}
           </select>
         </div>
@@ -83,22 +106,27 @@ const LightsailDeployment = () => {
             onChange={(e) => setSelectedPlan(e.target.value)}
             required>
             <option value="">Select a plan</option>
+            
             {instancePlans.map((plan) => (
-              <option key={plan} value={plan}>{plan}</option>
-            ))}
-          </select>
-        </div>
-        <button
-          type="submit"
-          className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          disabled={loading}>
-          {loading ? 'Initiating...' : 'Initiate Deployment'}
-        </button>
-      </form>
-      {message && <p className="mt-4 text-center font-medium">{message}</p>}
-    </div>
-  );
-};
-
-export default LightsailDeployment;
-
+                <option key={plan} value={plan}>{plan}</option>
+              ))}
+            </select>
+          </div>
+          <button
+            type="submit"
+            className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            disabled={loading}>
+            {loading ? 'Initiating...' : 'Initiate Deployment'}
+          </button>
+        </form>
+        {message && (
+          <div className="mt-4 text-center">
+            <p className="text-lg font-semibold">{message}</p>
+          </div>
+        )}
+      </div>
+    );
+  };
+  
+  export default LightsailDeployment;
+  
