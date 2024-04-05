@@ -11,7 +11,7 @@ const Login = () => {
   const [error, setError] = useState('');
 
   const loginUser = async () => {
-    const url = 'http://localhost:5010/auth/login';
+    const url = 'http://localhost:3010/auth/login';
     const data = {
       username: username,
       email: email,
@@ -26,12 +26,13 @@ const Login = () => {
       const response = await axios.post(url, data, { headers });
       
       if(response.status >= 200 && response.status < 300) {
+        console.log(response)
         // Assuming the token is returned in the response data under the key 'token'
-        const { token } = response.data;
-        // Storing the token securely in sessionStorage
-        sessionStorage.setItem('jwtToken', token);
+        const { accessToken } = response.data;
+        // // Storing the token securely in sessionStorage
+        sessionStorage.setItem('jwtToken', accessToken);
   
-        // Navigate to dashboard
+        // // Navigate to dashboard
         navigate('/dashboard');
       } else {
         // Handle non-success status codes appropriately

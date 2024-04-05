@@ -13,7 +13,7 @@ const ConfirmPassword = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.post('http://localhost:5010/auth/confirm-password', { username, code, password });
+      await axios.post('http://localhost:3010/auth/confirm-password', { username, code, password });
       navigate('/login'); // Navigate back to login page after successful password reset
     } catch (error) {
       setError(error.response.data.message || 'An error occurred');

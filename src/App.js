@@ -11,6 +11,8 @@ import ConfirmPassword from './components/auth/ConfirmPassword'; // Import Confi
 import LightsailDeployment from './components/infra/LightsailDeployment'; // Import LightsailDeployment component
 import MonolithDeployment from './components/infra/MonolithDeployment';
 import './index.css';
+import './tailwind.css';
+
 
 function App() {
   return (
