@@ -5,21 +5,19 @@ import '../../tailwind.css';
 const MonolithDeployment = () => {
   const [awsRegions, setAwsRegions] = useState([]);
   const [selectedRegion, setSelectedRegion] = useState('');
-  const [availabilityZones, setAvailabilityZones] = useState([]);
-  const [selectedAZ, setSelectedAZ] = useState('');
   const [images, setImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState('');
   const osOptions = [
-    'linux', 
-    'windows', 
-    'amazon linux', 
-    'ubuntu', 
-    'red hat enterprise linux', 
-    'suse linux enterprise server', 
-    'debian', 
-    'centos', 
-    'fedora', 
-    'oracle linux'
+    // 'linux', 
+    // 'windows', 
+    'al2023', 
+    // 'ubuntu', 
+    // 'red hat enterprise linux', 
+    // 'suse linux enterprise server', 
+    // 'debian', 
+    // 'centos', 
+    // 'fedora', 
+    // 'oracle linux'
   ];
   const [selectedOs, setSelectedOs] = useState('');
   const instanceTypes = [
@@ -32,12 +30,9 @@ const MonolithDeployment = () => {
   const [selectedInstanceType, setSelectedInstanceType] = useState('');
   const dbTypes = [
     'MySQL', 
-    'PostgreSQL', 
-    'MongoDB', 
     'MariaDB'
   ];
   const phpVersions = [
-    'PHP 7.4', 
     'PHP 8.0', 
     'PHP 8.1'
   ];
@@ -54,6 +49,7 @@ const MonolithDeployment = () => {
   const [storage, setStorage] = useState(20); // Default storage size
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [deploymentName, setDeploymentName] = useState('');
   const token = sessionStorage.getItem('jwtToken');
   // Helper function for fetching data
   const fetchData = async (url, setter) => {
@@ -83,33 +79,21 @@ const MonolithDeployment = () => {
   }, [selectedOs, token]);
 
   useEffect(() => {
-    if (selectedRegion) {
-      fetchData(`http://localhost:3010/infra-deploy/azs/${selectedRegion}`, setAvailabilityZones);
-    } else {
-      setAvailabilityZones([]);
-    }
-  }, [selectedRegion, token]);
-
-  useEffect(() => {
     console.log("this is getting triggered", selectedRegion);
     if (selectedRegion) {
       const fetchAZs = async () => {
         try {
-          const timestamp = new Date().getTime(); // Unique timestamp to bypass cache
           const response = await axios.get(`http://localhost:3010/infra-deploy/azs/${selectedRegion}?timestamp=123123`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           console.log(`Fetching AZs for region: ${selectedRegion}`);
           console.log('AZs response:', response.data);
-          setAvailabilityZones(response.data);
         } catch (error) {
           console.error(`Failed to fetch AZs for region ${selectedRegion}:`, error);
-          setAvailabilityZones([]); // Resetting or handling error
         }
       };
       fetchAZs();
     } else {
-      setAvailabilityZones([]); // Resetting AZs if no region is selected
     }
   }, [selectedRegion, token]); // Adding token to dependency array as a best practice
   
@@ -121,8 +105,8 @@ const MonolithDeployment = () => {
     setLoading(true);
 
     const deploymentData = {
+      deploymentName: deploymentName,
       region: selectedRegion,
-      az: selectedAZ,
       image: selectedImage,
       instanceType: selectedInstanceType,
       dbType: selectedDbType,
@@ -136,8 +120,9 @@ const MonolithDeployment = () => {
 
     try {
       const headers = { Authorization: `Bearer ${token}` };
-      const response = await axios.post('http://localhost:3010/infra-deploy/monolith', deploymentData, { headers });
       setMessage('Deployment initiated successfully!');
+      const response = await axios.post('http://localhost:3010/infra-deploy/monolith', deploymentData, { headers });
+      console.log('Deployment response:', response.data);
     } catch (error) {
       setMessage('Failed to initiate deployment. Error: ' + (error.response ? error.response.data.message : error.message));
     } finally {
@@ -150,6 +135,19 @@ const MonolithDeployment = () => {
          <h2 className="text-xl font-bold mb-4">Initiate Monolith Deployment</h2>
      <form onSubmit={handleSubmit} className="space-y-4">
 
+      {/* Deployment Name */}
+      <div>
+        <label htmlFor="deploymentName" className="block text-sm font-medium text-gray-700">Deployment Name</label>
+        <input
+          id="deploymentName"
+          type="text"
+          className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none"
+          value={deploymentName}
+          onChange={(e) => setDeploymentName(e.target.value)}
+          required
+        />
+      </div>
+
       {/* AWS Region Dropdown */}
       <div>
           <label htmlFor="region" className="block text-sm font-medium text-gray-700">AWS Region</label>
@@ -157,17 +155,6 @@ const MonolithDeployment = () => {
             <option value="">Select AWS Region</option>
             {awsRegions.map((region) => (
               <option key={region} value={region}>{region}</option>
-            ))}
-          </select>
-        </div>
-
-      {/* Availability Zone Dropdown */}
-      <div>
-          <label htmlFor="az" className="block text-sm font-medium text-gray-700">Availability Zone</label>
-          <select id="az" className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none" value={selectedAZ} onChange={(e) => setSelectedAZ(e.target.value)} required>
-            <option value="">Select an availability zone</option>
-            {availabilityZones.map((az, index) => (
-              <option key={index} value={az}>{az}</option> // Use index as key if az is not unique
             ))}
           </select>
         </div>
@@ -265,7 +252,7 @@ const MonolithDeployment = () => {
           onChange={(e) => setKeyPairName(e.target.value)}
           required
         />
-      </div>
+      </div> 
       {/* Security Group Settings */}
       <div className="flex gap-4">
         <div className="flex items-center">
