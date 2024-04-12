@@ -28,9 +28,10 @@ const Login = () => {
       if(response.status >= 200 && response.status < 300) {
         console.log(response)
         // Assuming the token is returned in the response data under the key 'token'
-        const { accessToken } = response.data;
+        const { accessToken, user } = response.data;
         // // Storing the token securely in sessionStorage
         sessionStorage.setItem('jwtToken', accessToken);
+        sessionStorage.setItem('userId', user.id);
   
         // // Navigate to dashboard
         navigate('/dashboard');
