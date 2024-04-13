@@ -37,7 +37,7 @@ const Header = () => {
           <nav>
             <ul className="flex gap-4">
               {isDashboardOrInfra && (
-                <li className="relative">
+                <li className="relative mr-10">
                   <button onClick={toggleDropdown} className="hover:underline focus:outline-none">
                     Account
                   </button>

@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { FiX } from 'react-icons/fi';
+import CubeLoader from '../common/CubeLoader'; // Adjust the path as necessary
+
 import '../../tailwind.css';
+
 
 const MonolithDeployment = () => {
   const navigate = useNavigate(); // Hook to programmatically navigate
@@ -54,9 +58,12 @@ const MonolithDeployment = () => {
   const [storage, setStorage] = useState(20); // Default storage size
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [showMessage, setShowMessage] = useState(false);
+  const [messageType, setMessageType] = useState('');
   const [deploymentName, setDeploymentName] = useState('');
   const [keyPairId, setKeyPairId] = useState('');
   const token = sessionStorage.getItem('jwtToken');
+  
   // Helper function for fetching data
   const fetchData = async (url, setter, setLoading = null) => {
     try {
@@ -136,12 +143,12 @@ const MonolithDeployment = () => {
       dbType: selectedDbType,
       phpVersion: selectedPhpVersion,
       serverSoftware: selectedServerSoftware,
+      keyPairName,
       keyPairId,
       allowSSH,
       allowHTTP,
       storage,
-      userId,
-      keyPairName
+      userId
     };
 
     try {
@@ -149,24 +156,35 @@ const MonolithDeployment = () => {
       const response = await axios.post('http://localhost:3010/infra-deploy/monolith', deploymentData, { headers });
       console.log(response.data);
       setMessage('Deployment initiated successfully!');
+      setMessageType('success');
+      setShowMessage(true);
     } catch (error) {
       setMessage('Failed to initiate deployment. Error: ' + (error.response ? error.response.data.message : error.message));
+      setMessageType('error');
+      
     } finally {
+      setShowMessage(true);
       setLoading(false);
     }
   };
   const isLoading = loadingImages;
+  const closeMessage = () => {
+    setShowMessage(false);
+    setMessage(''); // Clear the message to avoid showing it below the button
+  };
 
     return (
-      <div className="form-container mx-auto p-4">
-      {/* Loader Overlay */}
-      {loadingImages && (
-      <div className="overlay">
-        <div className="loader"></div>
+      <div className="form-container mx-auto p-4 bg-page-background">
+{/* Loader Overlay */}
+{(loading || loadingImages) && (
+      <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+        <CubeLoader />
       </div>
     )}
+
+
          <h2 className="text-xl font-bold mb-4">Initiate Monolith Deployment</h2>
-     <form onSubmit={handleSubmit} className="space-y-4">
+     <form onSubmit={handleSubmit} className="space-y-4 bg-white ">
 
       {/* Deployment Name */}
       <div>
@@ -279,7 +297,7 @@ const MonolithDeployment = () => {
     <label htmlFor="storage" className="block text-sm font-medium text-gray-700">Storage in GiB</label>
     <input id="storage" type="number" className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none" value={storage} onChange={(e) => setStorage(e.target.value)} required />
   </div>
-
+  
   <div className="relative mb-4">
   <label htmlFor="keyPairName" className="block text-sm font-medium text-gray-700">Key Pair Name</label>
   <div className="relative">
@@ -328,7 +346,20 @@ const MonolithDeployment = () => {
           </label>
         </div>
       </div>
-       
+          {/* Overlay for messages */}
+          {showMessage && (
+  <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+    <div className="bg-white rounded-lg p-5 relative w-96 shadow-lg">
+      <button 
+        className="absolute top-3 right-3 text-gray-500 hover:text-gray-700" 
+        onClick={closeMessage}
+      >
+        <FiX size={24} />
+      </button>
+      <p className={`text-lg ${messageType === 'success' ? 'text-green-500' : 'text-red-500'}`}>{message}</p>
+    </div>
+  </div>
+)}
 
       {/* Submit Button */}
       <button
