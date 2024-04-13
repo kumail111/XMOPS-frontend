@@ -6,34 +6,55 @@ import Login from './components/auth/Login';
 import Registration from './components/auth/Registration';
 import VerifyEmail from './components/auth/VerifyEmail';
 import Dashboard from './components/dashboard/Dashboard';
-import ForgetPassword from './components/auth/ForgetPassword'; // Import ForgetPassword component
-import ConfirmPassword from './components/auth/ConfirmPassword'; // Import ConfirmPassword component
-import LightsailDeployment from './components/infra/LightsailDeployment'; // Import LightsailDeployment component
+import UserProfile from './Account/UserAccount'; // Import the UserProfile component
+import ForgetPassword from './components/auth/ForgetPassword';
+import ConfirmPassword from './components/auth/ConfirmPassword';
+import LightsailDeployment from './components/infra/LightsailDeployment';
 import MonolithDeployment from './components/infra/MonolithDeployment';
+import HighlyavailableDeployment from './components/infra/HighlyavailableDeployment';
+import CubeLoader from './components/common/CubeLoader';
+
+
 import './index.css';
 import './tailwind.css';
 
+// Helper function to check if the user is authenticated
+const isAuthenticated = () => {
+  const token = sessionStorage.getItem('jwtToken');
+  return token != null;
+};
+
+// Custom Route component to protect routes that require authentication
+const PrivateRoute = ({ children }) => {
+  if (!isAuthenticated()) {
+    return <Navigate to="/login" />;
+  }
+  return children;
+};
 
 function App() {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen">
-        <Header />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Navigate replace to="/login" />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Registration />} />
-            <Route path="/verify-email" element={<VerifyEmail />} />
-            <Route path="/forget-password" element={<ForgetPassword />} /> {/* ForgetPassword route */}
-            <Route path="/confirm-password" element={<ConfirmPassword />} /> {/* ConfirmPassword route */}
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/lightsail-deployment" element={<LightsailDeployment />} /> {/* Lightsail Deployment route */}
-            <Route path="/monolith-deployment" element={<MonolithDeployment />} /> {/* Monolith Deployment route */}
-          </Routes>
-        </main>
-        <Footer />
-      </div>
+        <div className="flex flex-col min-h-screen">
+          <Header /> {/* No longer need to pass props to Header */}
+          <main className="flex-grow">
+            <Routes>
+              <Route path="/" element={<Navigate replace to="/login" />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Registration />} />
+              <Route path="/verify-email" element={<VerifyEmail />} />
+              <Route path="/forget-password" element={<ForgetPassword />} />
+              <Route path="/confirm-password" element={<ConfirmPassword />} />
+              <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+              <Route path="/lightsail-deployment" element={<PrivateRoute><LightsailDeployment /></PrivateRoute>} />
+              <Route path="/monolith-deployment" element={<PrivateRoute><MonolithDeployment /></PrivateRoute>} />
+              <Route path="/highlyavailable-deployment" element={<PrivateRoute><HighlyavailableDeployment /></PrivateRoute>} />
+              <Route path="/account" element={<PrivateRoute><UserProfile /></PrivateRoute>} />
+              {/* No longer need to pass props to UserProfile */}
+            </Routes>
+          </main>
+          <Footer />
+        </div>
     </Router>
   );
 }
