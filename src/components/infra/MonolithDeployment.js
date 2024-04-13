@@ -15,7 +15,7 @@ const MonolithDeployment = () => {
   const osOptions = [
 // 'linux', 
     // 'windows', 
-    'al2023', 
+    'amazon linux', 
     // 'ubuntu', 
     // 'red hat enterprise linux', 
     // 'suse linux enterprise server', 
@@ -38,8 +38,8 @@ const MonolithDeployment = () => {
     'MariaDB'
   ];
   const phpVersions = [
-    'PHP 8.0', 
-    'PHP 8.1'
+    '8.1', 
+    '8.2'
   ];
   const serverSoftwares = [
     'Apache', 
@@ -140,7 +140,8 @@ const MonolithDeployment = () => {
       allowSSH,
       allowHTTP,
       storage,
-      userId
+      userId,
+      keyPairName
     };
 
     try {
@@ -274,6 +275,11 @@ const MonolithDeployment = () => {
   </div>
 
   {/* Storage in GiB Input */}
+  <div>
+    <label htmlFor="storage" className="block text-sm font-medium text-gray-700">Storage in GiB</label>
+    <input id="storage" type="number" className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none" value={storage} onChange={(e) => setStorage(e.target.value)} required />
+  </div>
+
   <div className="relative mb-4">
   <label htmlFor="keyPairName" className="block text-sm font-medium text-gray-700">Key Pair Name</label>
   <div className="relative">
