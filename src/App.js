@@ -6,7 +6,6 @@ import Login from './components/auth/Login';
 import Registration from './components/auth/Registration';
 import VerifyEmail from './components/auth/VerifyEmail';
 import Dashboard from './components/dashboard/Dashboard';
-import UserProfile from './Account/UserAccount'; // Import the UserProfile component
 import ForgetPassword from './components/auth/ForgetPassword';
 import ConfirmPassword from './components/auth/ConfirmPassword';
 import LightsailDeployment from './components/infra/LightsailDeployment';
@@ -49,7 +48,6 @@ function App() {
               <Route path="/lightsail-deployment" element={<PrivateRoute><LightsailDeployment /></PrivateRoute>} />
               <Route path="/monolith-deployment" element={<PrivateRoute><MonolithDeployment /></PrivateRoute>} />
               <Route path="/highlyavailable-deployment" element={<PrivateRoute><HighlyavailableDeployment /></PrivateRoute>} />
-              <Route path="/account" element={<PrivateRoute><UserProfile /></PrivateRoute>} />
               {/* No longer need to pass props to UserProfile */}
             </Routes>
           </main>

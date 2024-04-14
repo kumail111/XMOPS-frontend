@@ -12,7 +12,7 @@ const LightsailDeployment = () => {
   const [availabilityZones, setAvailabilityZones] = useState([]);
   const [selectedAZ, setSelectedAZ] = useState('');
   const [instanceName, setInstanceName] = useState('');
-  const [blueprints, setBlueprints] = useState(['WordPress']); // Assuming fixed blueprint for simplicity
+  const [blueprints, setBlueprints] = useState(['wordpress']); // Assuming fixed blueprint for simplicity
   const [selectedBlueprint, setSelectedBlueprint] = useState('');
   const [instancePlans, setInstancePlans] = useState(['nano', 'micro', 'small']); // Example plans
   const [selectedPlan, setSelectedPlan] = useState('');
@@ -22,6 +22,7 @@ const LightsailDeployment = () => {
   const [showMessage, setShowMessage] = useState(false);
   const [messageType, setMessageType] = useState('');
   const token = sessionStorage.getItem('jwtToken');
+  const userId = sessionStorage.getItem('userId');
 
   // Redirect to login if no token is present
   useEffect(() => {
@@ -77,11 +78,12 @@ const LightsailDeployment = () => {
     setShowMessage(false);
 
     const deploymentData = {
-      region: selectedRegion,
-      az: selectedAZ,
-      blueprint: selectedBlueprint,
+      lightRegion: selectedRegion,
+      lightZone: selectedAZ,
+      lightBlueprint: selectedBlueprint,
       instancePlan: selectedPlan,
-      instanceName: instanceName,
+      lightDeploymentName: instanceName,
+      userId: userId,
     };
 
     try {
