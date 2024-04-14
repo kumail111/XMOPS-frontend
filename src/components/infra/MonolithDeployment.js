@@ -2,7 +2,7 @@ import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FiX } from 'react-icons/fi';
-import CubeLoader from '../common/CubeLoader'; // Adjust the path as necessary
+import CubeLoader from '../common/CubeLoader'; 
 
 import '../../tailwind.css';
 
@@ -158,6 +158,9 @@ const MonolithDeployment = () => {
       setMessage('Deployment initiated successfully!');
       setMessageType('success');
       setShowMessage(true);
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 2000);
     } catch (error) {
       setMessage('Failed to initiate deployment. Error: ' + (error.response ? error.response.data.message : error.message));
       setMessageType('error');
@@ -295,7 +298,7 @@ const MonolithDeployment = () => {
   {/* Storage in GiB Input */}
   <div>
     <label htmlFor="storage" className="block text-sm font-medium text-gray-700">Storage in GiB</label>
-    <input id="storage" type="number" className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none" value={storage} onChange={(e) => setStorage(e.target.value)} required />
+    <input id="storage" type="number" className="form-field mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none" value={storage} onChange={(e) => setStorage(e.target.value)} required />
   </div>
   
   <div className="relative mb-4">

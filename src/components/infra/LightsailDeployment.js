@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FiX } from 'react-icons/fi';
-import CubeLoader from '../common/CubeLoader';
+import CubeLoader from '../common/CubeLoader'; 
 import '../../tailwind.css';
 
 const LightsailDeployment = () => {
@@ -95,6 +95,9 @@ const LightsailDeployment = () => {
       console.log(data);
       setMessageType('success');
       setShowMessage(true);
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 2000);
     } catch (error) {
       console.error('Deployment failed:', error);
       setMessage('Failed to initiate deployment.');
@@ -115,11 +118,11 @@ const LightsailDeployment = () => {
 return (
   <div className="form-container mx-auto p-4 bg-page-background dark:bg-page-dark-background">
     <h2 className="text-xl font-bold mb-4">Initiate Lightsail Deployment</h2>
-    {loadingAZ && (
-    <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
-    <CubeLoader />
-  </div>
-)}
+    {loading && (
+        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+          <CubeLoader />
+        </div>
+      )}
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* Instance Name Input */}
       <div>
