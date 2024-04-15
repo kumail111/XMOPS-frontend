@@ -11,7 +11,7 @@ const Registration = () => {
   const [error, setError] = useState('');
 
   const registerUser = async () => {
-    const url = 'http://localhost:5010/auth/register'; 
+    const url = 'http://localhost:3010/auth/register'; 
     const data = { name: username, email, password, phone: phoneNumber };
     const headers = { 'Content-Type': 'application/json' };
 

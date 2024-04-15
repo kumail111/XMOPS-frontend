@@ -10,7 +10,7 @@ const ForgetPassword = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.post('http://localhost:5010/auth/forgot-password', { username });
+      await axios.post('http://localhost:3010/auth/forgot-password', { username });
       navigate('/confirm-password'); // Navigate to confirm password page
     } catch (error) {
       setError(error.response.data.message || 'An error occurred');

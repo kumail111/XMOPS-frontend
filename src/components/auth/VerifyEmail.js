@@ -23,7 +23,7 @@ const VerifyEmail = () => {
   };
 
   const verifyUser = async () => {
-    const url = 'http://localhost:5010/auth/verify';
+    const url = 'http://localhost:3010/auth/verify';
     const userData = { name: data.name, email: data.email, code };
     const headers = { 'Content-Type': 'application/json' };
 

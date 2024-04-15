@@ -1,7 +1,8 @@
-import axios from 'axios';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
+
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -9,9 +10,10 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+   
 
   const loginUser = async () => {
-    const url = 'http://localhost:5010/auth/login';
+    const url = 'http://localhost:3010/auth/login';
     const data = {
       username: username,
       email: email,
@@ -26,12 +28,16 @@ const Login = () => {
       const response = await axios.post(url, data, { headers });
       
       if(response.status >= 200 && response.status < 300) {
+        console.log(response)
         // Assuming the token is returned in the response data under the key 'token'
-        const { token } = response.data;
-        // Storing the token securely in sessionStorage
-        sessionStorage.setItem('jwtToken', token);
+        const { accessToken, user } = response.data;
+        // // Storing the token securely in sessionStorage
+        sessionStorage.setItem('jwtToken', accessToken);
+        sessionStorage.setItem('userId', user.id);
+        sessionStorage.setItem('userName', user.name);  // Store user name
+      sessionStorage.setItem('userEmail', user.email);  // Store user email
   
-        // Navigate to dashboard
+        // // Navigate to dashboard
         navigate('/dashboard');
       } else {
         // Handle non-success status codes appropriately
@@ -50,7 +56,7 @@ const Login = () => {
   };
 
   return (
-    <section className="bg-custom-gray dark:bg-custom-dark">
+    <section className={`bg-custom-gray`}>
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -60,15 +66,15 @@ const Login = () => {
             <form className="space-y-4 md:space-y-6" onSubmit={onSubmit}>
               <div>
                 <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Username</label>
-                <input type="text" id="username" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Your Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
+                <input type="text" id="username" className=" border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Your Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
               </div>
               <div>
                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Email</label>
-                <input type="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <input type="email" id="email" className="border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
               </div>
               <div>
                 <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                <input type="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                <input type="password" id="password" className=" border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-start">
