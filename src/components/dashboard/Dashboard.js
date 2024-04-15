@@ -154,7 +154,7 @@ const Dashboard = () => {
                     deployment.status === 'success' ? 'bg-green-100 text-green-800' :
                     deployment.status === 'failed' ? 'bg-red-100 text-red-800' :
                     deployment.status === 'in progress' ? 'bg-orange-100 text-orange-800' : 'bg-orange-100 text-gray-800'}`}>
-                    {deployment.status || 'Unknown'}
+                    {deployment.status === 'success' ? 'SUCCESS' : deployment.status === 'failed' ? 'FAILED' : 'IN PROGRESS' || 'Unknown'}
                   </span>
                 </div>
               </div>
@@ -182,7 +182,7 @@ const Dashboard = () => {
                 <div className="mt-4 p-2 bg-gray-100 rounded-lg">
                   <h3 className="font-semibold text-md mb-2 bg-white">Logs:</h3>
                   <div className="text-sm font-mono bg-white p-3 rounded shadow-inner overflow-auto" style={{ maxHeight: "300px", maxWidth: "100%" }}>
-                    {deployment.logs.split('\n').map((line, index) => (
+                    {deployment.logs && deployment.logs.split('\n').map((line, index) => (
                       <div key={index}>
                         <span className="text-blue-600">{line.includes('ERROR') ? '❌' : line.includes('SUCCESS') ? '✅' : 'ℹ️'}</span>
                         <span>{line}</span>
