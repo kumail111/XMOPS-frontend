@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import CubeLoader from '../common/CubeLoader'; 
 import '../../tailwind.css';
 
 const HighlyAvailableDeployment = () => {
@@ -164,10 +165,10 @@ const handleGenerateKeyPair = async () => {
   return (
     <div className="container mx-auto p-4 bg-page-background dark:bg-page-dark-background">
       <h2 className="text-xl font-bold mb-4">Highly Available Deployment</h2>
-      {loading && (
-        <div className="flex justify-center items-center">
-          <div className="loader"></div>
-          <p>Loading...</p>
+   {/* Loader Overlay */}
+   {loading && (
+        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+          <CubeLoader />
         </div>
       )}
       <form onSubmit={handleSubmission} className="space-y-4">
